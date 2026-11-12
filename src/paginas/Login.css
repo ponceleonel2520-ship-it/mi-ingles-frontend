@@ -1,26 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap");
-
 .login {
-  --tinta: #16213a;
-  --texto-suave: #55607a;
-  --fondo: #eef2f9;
-  --superficie: #ffffff;
-  --borde: #d5dcea;
-  --error: #b3261e;
-  --alumno: #0e8a84;
-  --alumno-suave: #e0f4f2;
-  --docente: #4338a8;
-  --docente-suave: #e8e6f8;
-  --acento: var(--alumno);
-  --acento-suave: var(--alumno-suave);
+  --acento: var(--accent);
+  --acento-suave: var(--accent-suave);
 
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 24px 16px;
-  background: var(--fondo);
-  color: var(--tinta);
-  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .login[data-rol="docente"] {
@@ -36,27 +23,21 @@
 
 .login__panel {
   width: 100%;
-  max-width: 460px;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: 20px;
-  padding: 32px 28px 28px;
-  box-shadow: 0 18px 40px -24px rgba(22, 33, 58, 0.35);
+  max-width: 440px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
 }
 
 .login__header h1 {
-  margin: 0 0 6px;
-  font-family: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 1.75rem;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+  font-size: 1.6rem;
 }
 
 .login__header p {
-  margin: 0 0 22px;
-  color: var(--texto-suave);
-  font-size: 1rem;
+  margin: 0 0 20px;
+  color: var(--text-suave);
 }
 
 /* ---------- Bloques de rol ---------- */
@@ -64,33 +45,32 @@
 .roles {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
 .rol {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
-  padding: 16px 14px 14px;
+  gap: 4px;
+  padding: 14px;
   text-align: left;
   font: inherit;
-  color: var(--tinta);
-  background: var(--superficie);
-  border: 2px solid var(--borde);
-  border-radius: 14px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .rol:hover {
-  border-color: var(--tinta);
+  border-color: var(--text-suave);
 }
 
 .rol--alumno.rol--activo {
-  background: var(--alumno);
-  border-color: var(--alumno);
+  background: var(--accent);
+  border-color: var(--accent);
   color: #fff;
 }
 
@@ -101,8 +81,8 @@
 }
 
 .rol__icono {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   margin-bottom: 4px;
 }
 
@@ -111,32 +91,31 @@
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2.5;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .rol__titulo {
-  font-family: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 1.2rem;
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
 .rol__texto {
   font-size: 0.85rem;
   line-height: 1.35;
-  color: var(--texto-suave);
+  color: var(--text-suave);
 }
 
 .rol--activo .rol__texto {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* ---------- Formulario ---------- */
 
 .form {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .campo {
@@ -146,28 +125,29 @@
 
 .campo label {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
-.campo input {
+.campo input,
+.campo select {
   width: 100%;
-  padding: 12px 14px;
+  padding: 10px 12px;
   font: inherit;
-  color: var(--tinta);
-  background: var(--superficie);
-  border: 1.5px solid var(--borde);
-  border-radius: 10px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .campo input::placeholder {
-  color: #8a94ab;
+  color: #a39a90;
 }
 
-.campo input:focus {
+.campo input:focus,
+.campo select:focus {
   outline: none;
   border-color: var(--acento);
-  box-shadow: 0 0 0 4px var(--acento-suave);
+  box-shadow: 0 0 0 3px var(--acento-suave);
 }
 
 .campo__password {
@@ -175,22 +155,22 @@
 }
 
 .campo__password input {
-  padding-right: 92px;
+  padding-right: 84px;
 }
 
 .campo__ver {
   position: absolute;
   top: 50%;
-  right: 8px;
+  right: 6px;
   transform: translateY(-50%);
-  padding: 6px 10px;
+  padding: 4px 10px;
   font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--acento);
   background: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -198,30 +178,43 @@
   background: var(--acento-suave);
 }
 
+.campo__ayuda {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-suave);
+}
+
 .form__error {
   margin: 0;
   padding: 10px 12px;
   font-size: 0.9rem;
   color: var(--error);
-  background: #fdecea;
-  border-radius: 10px;
+  background: var(--error-bg);
+  border-radius: var(--radius);
+}
+
+.form__ok {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-radius: var(--radius);
 }
 
 .form__enviar {
-  padding: 14px 16px;
+  padding: 12px 16px;
   font: inherit;
   font-weight: 600;
-  font-size: 1rem;
   color: #fff;
   background: var(--acento);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: filter 0.2s, background-color 0.2s;
 }
 
 .form__enviar:hover:not(:disabled) {
-  filter: brightness(1.1);
+  filter: brightness(0.9);
 }
 
 .form__enviar:disabled {
@@ -229,30 +222,37 @@
   cursor: wait;
 }
 
-/* ---------- Accesibilidad ---------- */
-
-.login button:focus-visible,
-.login input:focus-visible {
-  outline: 3px solid var(--tinta);
-  outline-offset: 2px;
+.form__enviar--enlace {
+  display: block;
+  text-align: center;
+  text-decoration: none;
 }
 
-.campo input:focus-visible {
-  outline: none;
+.login__pie {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--text-suave);
+}
+
+.login__pie a {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+/* ---------- Accesibilidad ---------- */
+
+.login button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
 }
 
 @media (max-width: 380px) {
   .login__panel {
-    padding: 24px 18px 20px;
+    padding: 22px 16px;
   }
 
   .roles {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .login * {
-    transition: none !important;
   }
 }

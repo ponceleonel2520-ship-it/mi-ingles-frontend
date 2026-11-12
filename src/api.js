@@ -33,7 +33,8 @@ export async function apiFetch(ruta, opciones = {}) {
   const respuesta = await fetch(`${API_URL}${ruta}`, { ...opciones, headers });
   const datos = await respuesta.json().catch(() => null);
 
-  if (respuesta.status === 401) {
+  // Un 401 en /auth/ es "credenciales incorrectas"; en el resto es "sesión expirada"
+  if (respuesta.status === 401 && !ruta.startsWith('/auth/')) {
     cerrarSesion();
     window.location.assign('/');
     throw new Error('Tu sesión expiró. Inicia sesión de nuevo.');

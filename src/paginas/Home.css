@@ -1,54 +1,47 @@
-/* src/pages/Home.css */
 .home-container {
   text-align: center;
-  font-family: sans-serif;
-  margin-top: 40px;
+  margin-top: 24px;
 }
 
 .bloques-container {
   display: flex;
-  flex-wrap: wrap; /* Los bloques bajan de línea cuando no caben */
-  gap: 20px;
-  justify-content: center; /* Centra el contenido */
-  margin-top: 30px;
-  padding: 0 20px; /* Opcional: un pequeño margen lateral para que no peguen con el borde de la ventana */
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 28px;
+  padding: 0 20px;
 }
 
 .bloque-link {
-  flex: 1 1 200px; /* Se reparten el ancho, pero no se hacen más angostos de 200px */
-  /* width: 250px; -> ELIMINADO para que puedan crecer o encogerse */
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 40px 20px;
+  flex: 1 1 200px;
+  max-width: 280px;
+  padding: 32px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
   text-decoration: none;
-  color: #333;
-  font-size: 1.2rem;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 .bloque-link:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-  background-color: #f4f6f8;
-  color: #0056b3;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .btn-salir {
-  margin-top: 40px;
-  padding: 10px 20px;
+  margin-top: 36px;
+  padding: 8px 18px;
   font: inherit;
-  font-weight: 600;
-  color: #b3261e;
+  color: var(--error);
   background: transparent;
-  border: 1.5px solid #b3261e;
-  border-radius: 8px;
+  border: 1px solid var(--error);
+  border-radius: var(--radius);
   cursor: pointer;
 }
 
 .btn-salir:hover {
-  background: #b3261e;
+  background: var(--error);
   color: #fff;
 }

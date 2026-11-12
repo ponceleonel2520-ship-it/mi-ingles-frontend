@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { haySesion, apiFetch } from "../api";
 import "./Login.css";
 
@@ -166,6 +166,10 @@ export default function Login({ onLogin }) {
             {cargando ? "Ingresando..." : `Ingresar como ${rolActual.titulo.toLowerCase()}`}
           </button>
         </form>
+
+        <p className="login__pie">
+          ¿Aún no tienes cuenta? <Link to="/registro">Regístrate</Link>
+        </p>
       </section>
     </main>
   );

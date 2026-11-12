@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import Home from './paginas/home';
+import Home from './paginas/Home';
 import SubirMaterial from './paginas/SubirMaterial';
 import VerPuntuaciones from './paginas/VerPuntuaciones';
 import ListaAlumnos from './paginas/ListaAlumnos';
 import ListaMaterial from './paginas/ListaMaterial';
-import Login from "./paginas/Login"; // Asegúrate de que Login.jsx esté en la misma carpeta que App.jsx
+import Login from "./paginas/Login";
+import Registro from "./paginas/Registro";
 
 import './App.css'; 
 
@@ -24,6 +25,7 @@ function MainLayout() {
       <Routes>
         {/* El Login es la pantalla principal */}
         <Route path="/" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
         
         {/* El menú de opciones ahora está en /inicio */}
         <Route path="/inicio" element={<Home />} />

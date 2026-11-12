@@ -1,26 +1,30 @@
 .tabla-contenedor {
   max-width: 900px;
-  margin: 24px auto;
+  margin: 20px auto;
   overflow-x: auto;
 }
 
 .tabla {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   text-align: left;
-  color: #333;
+  color: var(--text);
 }
 
 .tabla th,
 .tabla td {
-  padding: 12px 14px;
-  border-bottom: 1px solid #eee;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
 }
 
 .tabla th {
-  background: #f4f6f8;
+  background: var(--accent-suave);
+  color: var(--accent);
   font-weight: 600;
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: none;
 }
