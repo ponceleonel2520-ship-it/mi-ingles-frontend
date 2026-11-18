@@ -15,9 +15,9 @@ function MainLayout() {
   return (
     <div className="app-container" style={{ maxWidth: '100%', width: '100%' }}> 
       
-      {/* Ocultamos el botón de volver si estamos en la pantalla de Login (ruta "/") */}
-      {location.pathname !== '/' && (
-        <Link to="/" className="btn-volver">
+      {/* Ocultamos el botón en el login, el registro y el menú de inicio */}
+      {!['/', '/registro', '/inicio'].includes(location.pathname) && (
+        <Link to="/inicio" className="btn-volver">
           ← Volver al Inicio
         </Link>
       )}
