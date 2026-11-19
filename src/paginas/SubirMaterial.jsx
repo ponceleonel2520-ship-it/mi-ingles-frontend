@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { apiFetch, useApi } from '/src/api.js';
+import { apiFetch, useApi } from '../api';
 import './SubirMaterial.css';
 
 export default function SubirMaterial() {
   const [titulo, setTitulo] = useState('');
+  const [traduccion, setTraduccion] = useState('');
   const [archivo, setArchivo] = useState(null);
-  const [nivel, setNivel] = useState('1');
   const [categoriaId, setCategoriaId] = useState('');
 
   const [enviando, setEnviando] = useState(false);
@@ -30,7 +30,8 @@ export default function SubirMaterial() {
 
     const datos = new FormData();
     datos.append('nombre', titulo);
-    datos.append('nivel', nivel);
+    datos.append('traduccion', traduccion);
+    datos.append('nivel', '1'); // el nivel real lo define la categoría (A1 a C1)
     datos.append('categoria_id', categoriaId);
     datos.append('archivo', archivo);
 
@@ -46,8 +47,9 @@ export default function SubirMaterial() {
       });
 
       setTitulo('');
+      setTraduccion('');
       setArchivo(null);
-      setNivel('1');
+      
       setCategoriaId('');
 
       // Limpiar el input de archivo
@@ -70,13 +72,25 @@ export default function SubirMaterial() {
       <div className="contenedorFormulario">
         <form onSubmit={handleSubmit}>
           <div className="grupo">
-            <label htmlFor="nombre">Nombre de la tarjeta:</label>
+            <label htmlFor="nombre">Palabra en inglés:</label>
             <input
               id="nombre"
               type="text"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
               placeholder="Ej. Apple"
+              required
+            />
+          </div>
+
+          <div className="grupo">
+            <label htmlFor="traduccion">Traducción al español:</label>
+            <input
+              id="traduccion"
+              type="text"
+              value={traduccion}
+              onChange={(e) => setTraduccion(e.target.value)}
+              placeholder="Ej. Manzana"
               required
             />
           </div>
@@ -96,6 +110,7 @@ export default function SubirMaterial() {
               {(categorias ?? []).map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.nombre}
+                  {c.nivel ? ` · ${c.nivel}` : ''}
                 </option>
               ))}
             </select>
@@ -105,19 +120,6 @@ export default function SubirMaterial() {
                 {errorCategorias}
               </small>
             )}
-          </div>
-
-          <div className="grupo">
-            <label htmlFor="nivel">Nivel de dificultad:</label>
-            <select
-              id="nivel"
-              value={nivel}
-              onChange={(e) => setNivel(e.target.value)}
-            >
-              <option value="1">Básico</option>
-              <option value="2">Intermedio</option>
-              <option value="3">Avanzado</option>
-            </select>
           </div>
 
           <div className="grupo">

@@ -4,6 +4,7 @@ import SubirMaterial from './paginas/SubirMaterial';
 import VerPuntuaciones from './paginas/VerPuntuaciones';
 import ListaAlumnos from './paginas/ListaAlumnos';
 import ListaMaterial from './paginas/ListaMaterial';
+import Categorias from './paginas/Categorias';
 import Login from "./paginas/Login";
 import Registro from "./paginas/Registro";
 
@@ -13,7 +14,10 @@ function MainLayout() {
   const location = useLocation();
 
   return (
-    <div className="app-container" style={{ maxWidth: '100%', width: '100%' }}> 
+    <div
+      className={`app-container ${['/', '/registro'].includes(location.pathname) ? 'app-container--libre' : ''}`}
+      style={{ maxWidth: '100%', width: '100%' }}
+    >
       
       {/* Ocultamos el botón en el login, el registro y el menú de inicio */}
       {!['/', '/registro', '/inicio'].includes(location.pathname) && (
@@ -31,6 +35,7 @@ function MainLayout() {
         <Route path="/inicio" element={<Home />} />
         
         <Route path="/subir-material" element={<SubirMaterial />} />
+        <Route path="/categorias" element={<Categorias />} />
         <Route path="/puntuaciones" element={<VerPuntuaciones />} />
         <Route path="/alumnos" element={<ListaAlumnos />} />
         <Route path="/material" element={<ListaMaterial />} />

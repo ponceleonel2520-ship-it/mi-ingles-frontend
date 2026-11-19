@@ -1,23 +1,29 @@
 :root {
-  --bg: #faf8f5;
+  /* Fondos y bordes: blanco con un toque de azul */
+  --bg: #f2f6ff;
   --surface: #ffffff;
-  --border: #e7e2da;
-  --text: #2f2a26;
-  --text-suave: #7a7068;
+  --border: #d4e1fb;
 
-  --accent: #c4551d;
-  --accent-hover: #a84614;
-  --accent-suave: #fbeee6;
+  /* Texto: azul marino */
+  --text: #0b1f4d;
+  --text-suave: #5a6b8f;
 
-  --docente: #2f6f5e;
-  --docente-suave: #e3f1ed;
+  /* Azul principal (alumno y acciones) */
+  --accent: #1d63ed;
+  --accent-hover: #154fc4;
+  --accent-suave: #e4edff;
 
-  --error: #b3261e;
+  /* Azul marino (docente) */
+  --docente: #12338f;
+  --docente-suave: #dde6fb;
+
+  --error: #d92d20;
   --error-bg: #fdecea;
-  --ok: #1f6b45;
-  --ok-bg: #e5f4ec;
+  --ok: #0f7a4f;
+  --ok-bg: #e3f5ec;
 
-  --radius: 8px;
+  --radius: 10px;
+  --sombra: 0 8px 24px rgba(29, 99, 237, 0.12);
 
   font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
   color-scheme: light;
@@ -45,7 +51,7 @@ h1,
 h2,
 h3 {
   color: var(--text);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h1 {

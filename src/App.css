@@ -1,24 +1,31 @@
 .app-container {
+  box-sizing: border-box;
   padding: 72px 20px 24px;
   max-width: 100%;
   margin: 0 auto;
   position: relative;
 }
 
+/* Login y registro ocupan toda la pantalla, sin margen */
+.app-container--libre {
+  padding: 0;
+}
+
 .btn-volver {
   position: absolute;
   top: 20px;
   left: 20px;
-  padding: 8px 14px;
+  padding: 8px 16px;
   color: var(--accent);
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
   text-decoration: none;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .btn-volver:hover {
-  background: var(--accent-suave);
+  background: var(--accent);
+  color: #fff;
 }

@@ -10,51 +10,29 @@ const CARRERAS = [
   "Administración de Empresas",
 ];
 
-const ROLES = {
-  alumno: { titulo: "Alumno", texto: "Crea tu cuenta para practicar" },
-  docente: { titulo: "Docente", texto: "Crea tu cuenta para administrar material" },
-};
-
 const FORM_VACIO = {
   nombre: "",
-  identificador: "", // matrícula (alumno) o clave (docente)
+  matricula: "",
   correo: "",
   carrera: CARRERAS[0],
   contrasena: "",
   confirmar: "",
-  codigo: "",
 };
 
 export default function Registro() {
-  const [rol, setRol] = useState("alumno");
   const [form, setForm] = useState(FORM_VACIO);
   const [verPassword, setVerPassword] = useState(false);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState("");
   const [exito, setExito] = useState("");
 
-  const esAlumno = rol === "alumno";
-
   const cambiar = (campo) => (e) => setForm((f) => ({ ...f, [campo]: e.target.value }));
-
-  const cambiarRol = (nuevoRol) => {
-    setRol(nuevoRol);
-    setForm(FORM_VACIO);
-    setError("");
-    setExito("");
-  };
 
   // Mismas reglas que el backend, para avisar antes de mandar la petición
   const validar = () => {
     if (!form.nombre.trim()) return "Escribe tu nombre completo.";
-
-    if (esAlumno) {
-      if (!/^[0-9]{9}$/.test(form.identificador.trim())) return "La matrícula debe tener 9 dígitos.";
-      if (!/^\S+@\S+\.\S+$/.test(form.correo.trim())) return "Escribe un correo válido.";
-    } else if (!/^[A-Za-z0-9]{9}$/.test(form.identificador.trim())) {
-      return "La clave de docente debe tener 9 letras o números.";
-    }
-
+    if (!/^[0-9]{9}$/.test(form.matricula.trim())) return "La matrícula debe tener 9 dígitos.";
+    if (!/^\S+@\S+\.\S+$/.test(form.correo.trim())) return "Escribe un correo válido.";
     if (form.contrasena.length < 6) return "La contraseña debe tener al menos 6 caracteres.";
     if (form.contrasena !== form.confirmar) return "Las contraseñas no coinciden.";
     return "";
@@ -71,27 +49,18 @@ export default function Registro() {
       return;
     }
 
-    const cuerpo = esAlumno
-      ? {
+    setCargando(true);
+    try {
+      const datos = await apiFetch("/api/alumno", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           nombre: form.nombre.trim(),
-          matricula: form.identificador.trim(),
+          matricula: form.matricula.trim(),
           correo: form.correo.trim(),
           carrera: form.carrera,
           contrasena: form.contrasena,
-        }
-      : {
-          nombre: form.nombre.trim(),
-          clave: form.identificador.trim(),
-          contrasena: form.contrasena,
-          codigo: form.codigo.trim(),
-        };
-
-    setCargando(true);
-    try {
-      const datos = await apiFetch(esAlumno ? "/api/alumno" : "/api/docente", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cuerpo),
+        }),
       });
       setExito(datos?.message || "Registro exitoso. Ya puedes iniciar sesión.");
       setForm(FORM_VACIO);
@@ -103,28 +72,12 @@ export default function Registro() {
   };
 
   return (
-    <main className="login" data-rol={rol}>
+    <main className="login" data-rol="alumno">
       <section className="login__panel">
         <header className="login__header">
-          <h1>Crear cuenta</h1>
-          <p>Elige qué tipo de cuenta quieres crear</p>
+          <h1>Crear cuenta de alumno</h1>
+          <p>Regístrate para practicar vocabulario en inglés</p>
         </header>
-
-        <div className="roles" role="radiogroup" aria-label="Tipo de cuenta">
-          {Object.entries(ROLES).map(([clave, datos]) => (
-            <button
-              key={clave}
-              type="button"
-              role="radio"
-              aria-checked={rol === clave}
-              className={`rol rol--${clave} ${rol === clave ? "rol--activo" : ""}`}
-              onClick={() => cambiarRol(clave)}
-            >
-              <span className="rol__titulo">{datos.titulo}</span>
-              <span className="rol__texto">{datos.texto}</span>
-            </button>
-          ))}
-        </div>
 
         <form className="form" onSubmit={handleSubmit} noValidate>
           <div className="campo">
@@ -133,38 +86,34 @@ export default function Registro() {
           </div>
 
           <div className="campo">
-            <label htmlFor="identificador">{esAlumno ? "Matrícula" : "Clave de docente"}</label>
+            <label htmlFor="matricula">Matrícula</label>
             <input
-              id="identificador"
+              id="matricula"
               type="text"
               autoComplete="username"
-              inputMode={esAlumno ? "numeric" : "text"}
+              inputMode="numeric"
               maxLength={9}
-              placeholder={esAlumno ? "9 dígitos, ej. 123456789" : "9 caracteres, ej. DOC000001"}
-              value={form.identificador}
-              onChange={cambiar("identificador")}
+              placeholder="9 dígitos, ej. 123456789"
+              value={form.matricula}
+              onChange={cambiar("matricula")}
             />
           </div>
 
-          {esAlumno && (
-            <>
-              <div className="campo">
-                <label htmlFor="correo">Correo</label>
-                <input id="correo" type="email" autoComplete="email" value={form.correo} onChange={cambiar("correo")} />
-              </div>
+          <div className="campo">
+            <label htmlFor="correo">Correo</label>
+            <input id="correo" type="email" autoComplete="email" value={form.correo} onChange={cambiar("correo")} />
+          </div>
 
-              <div className="campo">
-                <label htmlFor="carrera">Carrera</label>
-                <select id="carrera" value={form.carrera} onChange={cambiar("carrera")}>
-                  {CARRERAS.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </>
-          )}
+          <div className="campo">
+            <label htmlFor="carrera">Carrera</label>
+            <select id="carrera" value={form.carrera} onChange={cambiar("carrera")}>
+              {CARRERAS.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <div className="campo">
             <label htmlFor="contrasena">Contraseña</label>
@@ -199,14 +148,6 @@ export default function Registro() {
             />
           </div>
 
-          {!esAlumno && (
-            <div className="campo">
-              <label htmlFor="codigo">Código de registro (opcional)</label>
-              <input id="codigo" type="text" value={form.codigo} onChange={cambiar("codigo")} />
-              <p className="campo__ayuda">Solo si tu institución te dio uno.</p>
-            </div>
-          )}
-
           {error && (
             <p className="form__error" role="alert">
               {error}
@@ -225,7 +166,7 @@ export default function Registro() {
             </Link>
           ) : (
             <button type="submit" className="form__enviar" disabled={cargando}>
-              {cargando ? "Registrando..." : `Crear cuenta de ${rol}`}
+              {cargando ? "Registrando..." : "Crear cuenta"}
             </button>
           )}
         </form>

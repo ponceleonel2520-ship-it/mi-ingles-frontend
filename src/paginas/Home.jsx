@@ -20,6 +20,9 @@ export default function Home() {
         {esDocente && (
           <Link to="/subir-material" className="bloque-link">Subir Material</Link>
         )}
+        {esDocente && (
+          <Link to="/categorias" className="bloque-link">Categorías</Link>
+        )}
         <Link to="/puntuaciones" className="bloque-link">Ver Puntuaciones</Link>
         {esDocente && (
           <Link to="/alumnos" className="bloque-link">Lista de Alumnos</Link>

@@ -1,0 +1,350 @@
+.alumnos {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* ---------- Cabecera ---------- */
+
+.alumnos__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 32px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--docente), var(--accent));
+  border-radius: 20px;
+  box-shadow: var(--sombra);
+}
+
+.alumnos__cabecera h2 {
+  margin: 0 0 4px;
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.alumnos__cabecera p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.alumnos__resumen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 96px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+}
+
+.alumnos__resumen strong {
+  font-size: 1.8rem;
+  line-height: 1.1;
+}
+
+.alumnos__resumen span {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* ---------- Buscador ---------- */
+
+.alumnos__buscar {
+  margin: 22px 0;
+}
+
+.alumnos__buscar input {
+  width: 100%;
+  height: 48px;
+  padding: 0 18px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-sizing: border-box;
+}
+
+.alumnos__buscar input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-suave);
+}
+
+.alumnos__vacio {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-suave);
+}
+
+/* ---------- Tarjetas de alumno ---------- */
+
+.alumnos__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.alumno {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.alumno:hover {
+  box-shadow: var(--sombra);
+  transform: translateY(-2px);
+}
+
+.alumno__avatar {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.alumno__datos h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.alumno__datos p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-suave);
+  overflow-wrap: anywhere;
+}
+
+.nivel {
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-suave);
+  border-radius: 999px;
+}
+
+.alumno__acciones {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.btn--primario {
+  color: #fff;
+  background: var(--accent);
+}
+
+.btn--primario:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn--suave {
+  color: var(--accent);
+  background: var(--accent-suave);
+}
+
+.btn--suave:hover {
+  background: var(--border);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* ---------- Panel lateral ---------- */
+
+.cajon {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cajon__fondo {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 31, 77, 0.45);
+}
+
+.cajon__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 100%);
+  height: 100%;
+  background: var(--surface);
+  box-shadow: -12px 0 32px rgba(11, 31, 77, 0.2);
+  text-align: left;
+}
+
+.cajon__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--docente), var(--accent));
+}
+
+.cajon__cabecera h3 {
+  margin: 0 0 2px;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.cajon__cabecera p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cajon__cerrar {
+  width: 36px;
+  height: 36px;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.cajon__cerrar:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.cajon__cuerpo {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.cajon__pie {
+  display: grid;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.cajon__pie .btn {
+  padding: 12px 16px;
+}
+
+/* ---------- Interruptores ---------- */
+
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.opcion input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opcion__interruptor {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 26px;
+  background: #c4d3f2;
+  border-radius: 999px;
+  transition: background 0.15s;
+}
+
+.opcion__interruptor::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.15s;
+}
+
+.opcion input:checked ~ .opcion__interruptor {
+  background: var(--accent);
+}
+
+.opcion input:checked ~ .opcion__interruptor::after {
+  transform: translateX(18px);
+}
+
+.opcion input:focus-visible ~ .opcion__interruptor {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* ---------- Mensajes ---------- */
+
+.msg {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+}
+
+.msg--ok {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+
+.msg--error {
+  color: var(--error);
+  background: var(--error-bg);
+}
+
+@media (max-width: 600px) {
+  .alumnos__cabecera {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+  }
+}

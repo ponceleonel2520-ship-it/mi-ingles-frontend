@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { haySesion, apiFetch } from "../api";
+import { Link, useNavigate } from "react-router-dom";
+import { apiFetch } from "../api";
 import "./Login.css";
 
 const ROLES = {
@@ -45,9 +45,6 @@ export default function Login({ onLogin }) {
 
   const rolActual = ROLES[rol];
 
-  // Si ya hay una sesión válida, no tiene caso mostrar el login
-  //if (haySesion()) return <Navigate to="/inicio" replace />;
-
   const cambiarRol = (nuevoRol) => {
     setRol(nuevoRol);
     setUsuario("");
@@ -72,7 +69,6 @@ export default function Login({ onLogin }) {
         tipo: rol,
       });
 
-      // Usamos apiFetch en lugar de axios
       const datos = await apiFetch("/auth/login", {
         method: "POST",
         body,
@@ -88,7 +84,6 @@ export default function Login({ onLogin }) {
       if (onLogin) onLogin({ token: datos.token, rol });
       navigate("/inicio", { replace: true });
     } catch (e) {
-      // Tu apiFetch ya lanza un error limpio, solo lo leemos aquí
       setError(e.message);
     } finally {
       setCargando(false);
@@ -96,80 +91,99 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <main className="login" data-rol={rol}>
-      <section className="login__panel">
-        <header className="login__header">
+    <main className="auth" data-rol={rol}>
+      <section className="auth__tarjeta">
+        <aside className="auth__lado">
           <h1>Bienvenido a English Cards</h1>
           <p>Elige cómo quieres ingresar</p>
-        </header>
 
-        <div className="roles" role="radiogroup" aria-label="Tipo de usuario">
-          {Object.entries(ROLES).map(([clave, datos]) => (
-            <button
-              key={clave}
-              type="button"
-              role="radio"
-              aria-checked={rol === clave}
-              className={`rol rol--${clave} ${rol === clave ? "rol--activo" : ""}`}
-              onClick={() => cambiarRol(clave)}
-            >
-              <span className="rol__icono">{datos.icono}</span>
-              <span className="rol__titulo">{datos.titulo}</span>
-              <span className="rol__texto">{datos.descripcion}</span>
-            </button>
-          ))}
-        </div>
-
-        <form className="form" onSubmit={handleSubmit} noValidate>
-          <div className="campo">
-            <label htmlFor="usuario">{rolActual.campoLabel}</label>
-            <input
-              id="usuario"
-              type="text"
-              inputMode={rolActual.inputMode}
-              autoComplete="username"
-              placeholder={rolActual.campoPlaceholder}
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-            />
-          </div>
-
-          <div className="campo">
-            <label htmlFor="password">Contraseña</label>
-            <div className="campo__password">
-              <input
-                id="password"
-                type={verPassword ? "text" : "password"}
-                autoComplete="current-password"
-                placeholder="Tu contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+          <div className="roles" role="radiogroup" aria-label="Tipo de usuario">
+            {Object.entries(ROLES).map(([clave, datos]) => (
               <button
+                key={clave}
                 type="button"
-                className="campo__ver"
-                onClick={() => setVerPassword((v) => !v)}
-                aria-pressed={verPassword}
+                role="radio"
+                aria-checked={rol === clave}
+                className={`rol rol--${clave} ${rol === clave ? "rol--activo" : ""}`}
+                onClick={() => cambiarRol(clave)}
               >
-                {verPassword ? "Ocultar" : "Mostrar"}
+                <span className="rol__icono">{datos.icono}</span>
+                <span className="rol__titulo">{datos.titulo}</span>
+                <span className="rol__texto">{datos.descripcion}</span>
               </button>
-            </div>
+            ))}
           </div>
+        </aside>
 
-          {error && (
-            <p className="form__error" role="alert">
-              {error}
+        <div className="auth__form">
+          <form className="form" onSubmit={handleSubmit} noValidate>
+            <div className="campo">
+              <label htmlFor="usuario">{rolActual.campoLabel}</label>
+              <div className="campo__entrada">
+                <span className="campo__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+                    <circle cx="8.5" cy="11" r="2" />
+                    <path d="M5.5 16c.6-1.5 1.8-2.2 3-2.2s2.4.7 3 2.2" />
+                    <path d="M14.5 10h4M14.5 13.5h4" />
+                  </svg>
+                </span>
+                <input
+                  id="usuario"
+                  type="text"
+                  inputMode={rolActual.inputMode}
+                  autoComplete="username"
+                  placeholder={rolActual.campoPlaceholder}
+                  value={usuario}
+                  onChange={(e) => setUsuario(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="campo">
+              <label htmlFor="password">Contraseña</label>
+              <div className="campo__password">
+                <input
+                  id="password"
+                  type={verPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="Tu contraseña"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="campo__ver"
+                  onClick={() => setVerPassword((v) => !v)}
+                  aria-pressed={verPassword}
+                >
+                  {verPassword ? "Ocultar" : "Mostrar"}
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                    <circle cx="12" cy="12" r="3" />
+                    {verPassword && <path d="M3 3l18 18" />}
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <p className="form__error" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button type="submit" className="form__enviar" disabled={cargando}>
+              {cargando ? "Ingresando..." : `Ingresar como ${rolActual.titulo.toLowerCase()}`}
+            </button>
+          </form>
+
+          {rol === "alumno" && (
+            <p className="login__pie">
+              ¿Aún no tienes cuenta? <Link to="/registro">Regístrate</Link>
             </p>
           )}
-
-          <button type="submit" className="form__enviar" disabled={cargando}>
-            {cargando ? "Ingresando..." : `Ingresar como ${rolActual.titulo.toLowerCase()}`}
-          </button>
-        </form>
-
-        <p className="login__pie">
-          ¿Aún no tienes cuenta? <Link to="/registro">Regístrate</Link>
-        </p>
+        </div>
       </section>
     </main>
   );
