@@ -20,6 +20,8 @@ export default function ListaAlumnos() {
   const [marcadas, setMarcadas] = useState([]);
   const [cargandoPanel, setCargandoPanel] = useState(false);
   const [guardando, setGuardando] = useState(false);
+  const [promoviendo, setPromoviendo] = useState(null);
+  const [aviso, setAviso] = useState({ texto: '', tipo: '' });
   const [mensaje, setMensaje] = useState({ texto: '', tipo: '' });
 
   const texto = busqueda.trim().toLowerCase();
@@ -74,7 +76,19 @@ export default function ListaAlumnos() {
       setGuardando(false);
     }
   };
-
+            <div className="alumno__acciones">
+              <button type="button" className="btn btn--primario" onClick={() => abrirCategorias(a)}>
+                Categorías
+              </button>
+              <button
+                type="button"
+                className="btn btn--suave"
+                onClick={() => promover(a)}
+                disabled={promoviendo === a.id || a.nivel === 'C1'}
+              >
+                {a.nivel === 'C1' ? 'Nivel máximo' : promoviendo === a.id ? 'Subiendo...' : 'Subir de nivel'}
+              </button>
+            </div>
   return (
     <div className="alumnos">
       <header className="alumnos__cabecera">
@@ -96,6 +110,11 @@ export default function ListaAlumnos() {
           onChange={(e) => setBusqueda(e.target.value)}
         />
       </div>
+      {aviso.texto && (
+        <p role={aviso.tipo === 'error' ? 'alert' : 'status'} className={`msg msg--${aviso.tipo}`}>
+          {aviso.texto}
+        </p>
+      )}
 
       {cargando && <p className="alumnos__vacio">Cargando alumnos...</p>}
       {error && (
@@ -125,9 +144,17 @@ export default function ListaAlumnos() {
 
             <span className="nivel">{a.nivel}</span>
 
-            <div className="alumno__acciones">
+                        <div className="alumno__acciones">
               <button type="button" className="btn btn--primario" onClick={() => abrirCategorias(a)}>
                 Categorías
+              </button>
+              <button
+                type="button"
+                className="btn btn--suave"
+                onClick={() => promover(a)}
+                disabled={promoviendo === a.id || a.nivel === 'C1'}
+              >
+                {a.nivel === 'C1' ? 'Nivel máximo' : promoviendo === a.id ? 'Subiendo...' : 'Subir de nivel'}
               </button>
             </div>
           </article>
