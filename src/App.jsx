@@ -1,14 +1,22 @@
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
+import { getRol, haySesion } from './api';
 import Home from './paginas/Home';
 import SubirMaterial from './paginas/SubirMaterial';
 import VerPuntuaciones from './paginas/VerPuntuaciones';
 import ListaAlumnos from './paginas/ListaAlumnos';
 import ListaMaterial from './paginas/ListaMaterial';
 import Categorias from './paginas/Categorias';
-import Login from "./paginas/Login";
-import Registro from "./paginas/Registro";
+import Login from './paginas/Login';
+import Registro from './paginas/Registro';
 
-import './App.css'; 
+import './App.css';
+
+// Sin sesión te manda al login; si el rol no tiene permiso, te regresa al menú
+function Protegida({ roles, children }) {
+  if (!haySesion()) return <Navigate to="/" replace />;
+  if (roles && !roles.includes(getRol())) return <Navigate to="/inicio" replace />;
+  return children;
+}
 
 function MainLayout() {
   const location = useLocation();
@@ -18,8 +26,7 @@ function MainLayout() {
       className={`app-container ${['/', '/registro'].includes(location.pathname) ? 'app-container--libre' : ''}`}
       style={{ maxWidth: '100%', width: '100%' }}
     >
-      
-      {/* Ocultamos el botón en el login, el registro y el menú de inicio */}
+      {/* El botón de volver no se muestra en el login, el registro ni el menú de inicio */}
       {!['/', '/registro', '/inicio'].includes(location.pathname) && (
         <Link to="/inicio" className="btn-volver">
           ← Volver al Inicio
@@ -27,18 +34,19 @@ function MainLayout() {
       )}
 
       <Routes>
-        {/* El Login es la pantalla principal */}
+        {/* Públicas */}
         <Route path="/" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
-        
-        {/* El menú de opciones ahora está en /inicio */}
-        <Route path="/inicio" element={<Home />} />
-        
-        <Route path="/subir-material" element={<SubirMaterial />} />
-        <Route path="/categorias" element={<Categorias />} />
-        <Route path="/puntuaciones" element={<VerPuntuaciones />} />
-        <Route path="/alumnos" element={<ListaAlumnos />} />
-        <Route path="/material" element={<ListaMaterial />} />
+
+        {/* Con sesión: alumno o docente */}
+        <Route path="/inicio" element={<Protegida><Home /></Protegida>} />
+        <Route path="/puntuaciones" element={<Protegida><VerPuntuaciones /></Protegida>} />
+        <Route path="/material" element={<Protegida><ListaMaterial /></Protegida>} />
+
+        {/* Solo docente */}
+        <Route path="/subir-material" element={<Protegida roles={['docente']}><SubirMaterial /></Protegida>} />
+        <Route path="/categorias" element={<Protegida roles={['docente']}><Categorias /></Protegida>} />
+        <Route path="/alumnos" element={<Protegida roles={['docente']}><ListaAlumnos /></Protegida>} />
       </Routes>
     </div>
   );

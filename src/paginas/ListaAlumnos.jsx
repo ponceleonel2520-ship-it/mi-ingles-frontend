@@ -15,14 +15,18 @@ export default function ListaAlumnos() {
   const { datos: alumnos, cargando, error } = useApi('/api/alumnos');
 
   const [busqueda, setBusqueda] = useState('');
+  const [niveles, setNiveles] = useState({}); // niveles nuevos después de promover
+  const [promoviendo, setPromoviendo] = useState(null);
+  const [aviso, setAviso] = useState({ texto: '', tipo: '' });
+
   const [seleccionado, setSeleccionado] = useState(null);
   const [categorias, setCategorias] = useState([]);
   const [marcadas, setMarcadas] = useState([]);
   const [cargandoPanel, setCargandoPanel] = useState(false);
   const [guardando, setGuardando] = useState(false);
-  const [promoviendo, setPromoviendo] = useState(null);
-  const [aviso, setAviso] = useState({ texto: '', tipo: '' });
   const [mensaje, setMensaje] = useState({ texto: '', tipo: '' });
+
+  const nivelDe = (alumno) => niveles[alumno.id] ?? alumno.nivel;
 
   const texto = busqueda.trim().toLowerCase();
   const visibles = alumnos.filter((a) =>
@@ -76,19 +80,32 @@ export default function ListaAlumnos() {
       setGuardando(false);
     }
   };
-            <div className="alumno__acciones">
-              <button type="button" className="btn btn--primario" onClick={() => abrirCategorias(a)}>
-                Categorías
-              </button>
-              <button
-                type="button"
-                className="btn btn--suave"
-                onClick={() => promover(a)}
-                disabled={promoviendo === a.id || a.nivel === 'C1'}
-              >
-                {a.nivel === 'C1' ? 'Nivel máximo' : promoviendo === a.id ? 'Subiendo...' : 'Subir de nivel'}
-              </button>
-            </div>
+
+  const promover = async (alumno) => {
+    const confirmado = window.confirm(
+      `¿Subir de nivel a ${alumno.nombre_completo}? Hoy está en ${nivelDe(alumno)}.`
+    );
+    if (!confirmado) return;
+
+    setPromoviendo(alumno.id);
+    setAviso({ texto: '', tipo: '' });
+
+    try {
+      const respuesta = await apiFetch(`/api/alumnos/${alumno.id}/promover`, {
+        method: 'POST',
+      });
+
+      const nuevo = respuesta?.data?.nivel;
+      if (nuevo) setNiveles((n) => ({ ...n, [alumno.id]: nuevo }));
+
+      setAviso({ texto: respuesta?.message || 'Nivel actualizado.', tipo: 'ok' });
+    } catch (err) {
+      setAviso({ texto: err.message || 'No se pudo subir de nivel.', tipo: 'error' });
+    } finally {
+      setPromoviendo(null);
+    }
+  };
+
   return (
     <div className="alumnos">
       <header className="alumnos__cabecera">
@@ -110,8 +127,13 @@ export default function ListaAlumnos() {
           onChange={(e) => setBusqueda(e.target.value)}
         />
       </div>
+
       {aviso.texto && (
-        <p role={aviso.tipo === 'error' ? 'alert' : 'status'} className={`msg msg--${aviso.tipo}`}>
+        <p
+          role={aviso.tipo === 'error' ? 'alert' : 'status'}
+          className={`msg msg--${aviso.tipo}`}
+          style={{ marginBottom: '16px' }}
+        >
           {aviso.texto}
         </p>
       )}
@@ -142,9 +164,9 @@ export default function ListaAlumnos() {
               <p>{a.correo}</p>
             </div>
 
-            <span className="nivel">{a.nivel}</span>
+            <span className="nivel">{nivelDe(a)}</span>
 
-                        <div className="alumno__acciones">
+            <div className="alumno__acciones">
               <button type="button" className="btn btn--primario" onClick={() => abrirCategorias(a)}>
                 Categorías
               </button>
@@ -152,9 +174,13 @@ export default function ListaAlumnos() {
                 type="button"
                 className="btn btn--suave"
                 onClick={() => promover(a)}
-                disabled={promoviendo === a.id || a.nivel === 'C1'}
+                disabled={promoviendo === a.id || nivelDe(a) === 'C1'}
               >
-                {a.nivel === 'C1' ? 'Nivel máximo' : promoviendo === a.id ? 'Subiendo...' : 'Subir de nivel'}
+                {nivelDe(a) === 'C1'
+                  ? 'Nivel máximo'
+                  : promoviendo === a.id
+                  ? 'Subiendo...'
+                  : 'Subir de nivel'}
               </button>
             </div>
           </article>
@@ -170,7 +196,7 @@ export default function ListaAlumnos() {
               <div>
                 <h3>Categorías</h3>
                 <p>
-                  {seleccionado.nombre_completo} · nivel {seleccionado.nivel}
+                  {seleccionado.nombre_completo} · nivel {nivelDe(seleccionado)}
                 </p>
               </div>
               <button
@@ -188,7 +214,7 @@ export default function ListaAlumnos() {
 
               {!cargandoPanel && categorias.length === 0 && !mensaje.texto && (
                 <p className="alumnos__vacio">
-                  No hay categorías activas para el nivel {seleccionado.nivel}. Créalas desde Categorías.
+                  No hay categorías activas para el nivel {nivelDe(seleccionado)}. Créalas desde Categorías.
                 </p>
               )}
 
